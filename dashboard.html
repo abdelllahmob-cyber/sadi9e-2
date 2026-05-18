@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>لوحة التحكم — متجر الرفوف العصرية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --primary:#8B5E3C;--primary-dark:#6B4226;--primary-light:#F5E6D3;
+  --accent:#C8956A;--text:#2C1810;--text-light:#7A6555;
+  --bg:#FAF7F3;--card:#fff;--border:#E0D3C5;
+  --red:#dc2626;--red-light:#fef2f2;--red-border:#fecaca;
+  --green:#16a34a;--green-light:#f0fdf4;--green-border:#bbf7d0;
+  --shadow:0 4px 24px rgba(107,66,38,.10);--shadow-lg:0 8px 48px rgba(107,66,38,.18);
+  --r:16px;--rs:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* ─── HEADER ─── */
+.dash-header{background:linear-gradient(135deg,var(--primary-dark),var(--primary));padding:0 20px;position:fixed;top:0;left:0;right:0;z-index:200;box-shadow:var(--shadow-lg)}
+.dash-inner{max-width:1100px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.dash-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.dash-logo-ico{width:38px;height:38px;background:rgba(255,255,255,.18);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;flex-shrink:0}
+.dash-logo-name{color:#fff;font-size:15px;font-weight:900;line-height:1.2}
+.dash-logo-sub{color:rgba(255,255,255,.65);font-size:10.5px;font-weight:500}
+.dash-links{display:flex;align-items:center;gap:6px}
+.dash-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:12.5px;font-weight:700;padding:7px 12px;border-radius:20px;transition:.2s;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.dash-links a:hover,.dash-links a.active{background:rgba(255,255,255,.18);color:#fff}
+.dash-add-btn{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);color:#fff;padding:8px 14px;border-radius:22px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:.2s;text-decoration:none;white-space:nowrap}
+.dash-add-btn:hover{background:rgba(255,255,255,.3)}
+
+/* ─── PAGE ─── */
+.page{padding-top:64px}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 20px}
+
+/* ─── STATS ─── */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:18px 16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:13px;transition:transform .2s,box-shadow .2s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.stat-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.si-br{background:var(--primary-light);color:var(--primary)}
+.si-gr{background:#e8f8ef;color:#16a34a}
+.si-ye{background:#fff8e1;color:#b45309}
+.si-bl{background:#eff6ff;color:#1d4ed8}
+.stat-val{font-size:24px;font-weight:900;color:var(--text);line-height:1}
+.stat-lbl{font-size:12px;color:var(--text-light);font-weight:600;margin-top:3px}
+
+/* ─── TOOLBAR ─── */
+.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.search-wrap{flex:1;min-width:200px;position:relative}
+.search-ico{position:absolute;top:50%;transform:translateY(-50%);right:13px;color:var(--text-light);font-size:14px;pointer-events:none}
+html[dir="ltr"] .search-ico{right:auto;left:13px}
+.search-inp{width:100%;padding:10px 40px 10px 14px;border:1.5px solid var(--border);border-radius:var(--rs);font-family:'Cairo',sans-serif;font-size:13.5px;color:var(--text);background:var(--card);outline:none;transition:.2s}
+html[dir="ltr"] .search-inp{padding:10px 14px 10px 40px}
+.search-inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(139,94,60,.1)}
+.sort-sel{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rs);font-family:'Cairo',sans-serif;font-size:13px;color:var(--text);background:var(--card);outline:none;cursor:pointer;transition:.2s}
+.sort-sel:focus{border-color:var(--primary)}
+
+/* ─── SEC ROW ─── */
+.sec-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.sec-ttl{font-size:17px;font-weight:900;color:var(--primary-dark);display:flex;align-items:center;gap:8px}
+.count-badge{background:var(--primary-light);color:var(--primary);padding:3px 10px;border-radius:20px;font-size:12px;font-weight:800}
+
+/* ─── GRID ─── */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+
+/* ─── CARD ─── */
+.prod-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transition:transform .25s,box-shadow .25s;position:relative}
+.prod-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.prod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));opacity:0;transition:opacity .3s}
+.prod-card:hover::before{opacity:1}
+
+.card-img-wrap{position:relative;aspect-ratio:4/3;background:var(--primary-light);overflow:hidden}
+.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.prod-card:hover .card-img{transform:scale(1.05)}
+.card-img-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(145deg,var(--primary-light),#e8d5c0);color:var(--primary)}
+.card-img-ph i{font-size:44px;opacity:.5;margin-bottom:8px}
+.card-img-ph span{font-size:12px;font-weight:700;opacity:.65}
+.card-date{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.5);color:#fff;padding:3px 9px;border-radius:12px;font-size:10.5px;font-weight:700;backdrop-filter:blur(4px)}
+
+.card-body{padding:16px}
+.card-name{font-size:15.5px;font-weight:900;color:var(--text);margin-bottom:5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-desc{font-size:12.5px;color:var(--text-light);line-height:1.6;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700}
+.tag-color{background:var(--primary-light);color:var(--primary)}
+.tag-size{background:#eff6ff;color:#1d4ed8}
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)}
+.card-price{font-size:22px;font-weight:900;color:var(--primary);line-height:1}
+.card-price small{font-size:12px;font-weight:600;color:var(--text-light)}
+.del-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--red-light);color:var(--red);border:1.5px solid var(--red-border);border-radius:var(--rs);font-family:'Cairo',sans-serif;font-size:12.5px;font-weight:800;cursor:pointer;transition:.2s}
+.del-btn:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.del-btn:disabled{opacity:.55;cursor:not-allowed}
+
+/* ─── EMPTY STATE ─── */
+.empty-state{grid-column:1/-1;text-align:center;padding:70px 20px}
+.empty-ico{font-size:62px;color:var(--primary);opacity:.3;margin-bottom:16px}
+.empty-ttl{font-size:17px;font-weight:800;color:var(--text);margin-bottom:8px}
+.empty-sub{font-size:13.5px;color:var(--text-light)}
+.empty-action{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:12px 22px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;text-decoration:none;border-radius:var(--rs);font-family:'Cairo',sans-serif;font-size:14px;font-weight:800;box-shadow:var(--shadow)}
+.empty-action:hover{opacity:.9}
+
+/* ─── SKELETON ─── */
+.skeleton{background:linear-gradient(90deg,#f0e8e0 25%,#e8dbd0 50%,#f0e8e0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden}
+.skel-img{height:220px}
+.skel-body{padding:16px}
+.skel-line{height:14px;margin-bottom:10px;border-radius:6px}
+.skel-line.w60{width:60%}
+.skel-line.w35{width:35%;height:22px}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);background:#333;color:#fff;padding:12px 24px;border-radius:10px;font-size:13.5px;font-weight:700;box-shadow:0 6px 28px rgba(0,0,0,.22);z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--green)}
+.toast.err{background:var(--red)}
+
+/* ─── MODAL ─── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.modal-bg.open{display:flex}
+.modal{background:var(--card);border-radius:var(--r);padding:30px 26px;max-width:390px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.28);text-align:center;animation:modalIn .25s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.modal-ico{width:62px;height:62px;border-radius:50%;background:var(--red-light);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px;border:2px solid var(--red-border)}
+.modal-ttl{font-size:17px;font-weight:900;color:var(--text);margin-bottom:8px}
+.modal-sub{font-size:13px;color:var(--text-light);margin-bottom:24px;line-height:1.6}
+.modal-btns{display:flex;gap:10px}
+.modal-cancel{flex:1;padding:12px;background:var(--bg);border:1.5px solid var(--border);color:var(--text-light);border-radius:var(--rs);font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:.2s}
+.modal-cancel:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.modal-confirm{flex:1;padding:12px;background:var(--red);color:#fff;border:none;border-radius:var(--rs);font-family:'Cairo',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.modal-confirm:hover:not(:disabled){background:#b91c1c}
+.modal-confirm:disabled{opacity:.6;cursor:not-allowed}
+
+/* ─── ADD PRODUCT BIG BUTTON ─── */
+.btn-add-big{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 36px;background:linear-gradient(135deg,#d4af37,#a87c1e);color:#fff;text-decoration:none;border-radius:var(--r);font-family:'Cairo',sans-serif;font-size:16px;font-weight:900;box-shadow:0 6px 24px rgba(212,175,55,.38);transition:.25s;border:none;cursor:pointer}
+.btn-add-big:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(212,175,55,.5)}
+.btn-add-big i{font-size:20px}
+.add-banner{background:linear-gradient(135deg,rgba(212,175,55,.10),rgba(212,175,55,.05));border:1.5px dashed rgba(212,175,55,.45);border-radius:var(--r);padding:24px 20px;text-align:center;margin-bottom:28px}
+.add-banner-ttl{font-size:14px;color:var(--text-light);margin-bottom:14px;font-weight:600}
+
+/* ─── PASSWORD GATE ─── */
+.gate-overlay{position:fixed;inset:0;background:linear-gradient(135deg,var(--primary-dark) 0%,#3d1f0d 50%,var(--primary) 100%);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.gate-overlay.gone{display:none}
+.gate-box{background:#fff;border-radius:20px;padding:36px 30px 32px;width:100%;max-width:360px;box-shadow:0 28px 70px rgba(0,0,0,.38);text-align:center;animation:gateIn .4s ease}
+@keyframes gateIn{from{opacity:0;transform:translateY(28px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.gate-ico{width:68px;height:68px;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;margin:0 auto 14px;box-shadow:0 6px 18px rgba(139,94,60,.38)}
+.gate-ttl{font-size:18px;font-weight:900;color:var(--primary-dark);margin-bottom:3px}
+.gate-sub{font-size:12.5px;color:var(--text-light);font-weight:500;margin-bottom:26px}
+.gate-lbl{display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;text-align:right}
+.gate-inp-wrap{position:relative;margin-bottom:8px}
+.gate-inp{width:100%;padding:12px 46px 12px 16px;border:2px solid var(--border);border-radius:var(--rs);font-family:'Cairo',sans-serif;font-size:16px;color:var(--text);outline:none;transition:.2s;letter-spacing:5px;text-align:center}
+html[dir="rtl"] .gate-inp{padding:12px 46px 12px 16px}
+.gate-inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(139,94,60,.12);letter-spacing:5px}
+.gate-eye{position:absolute;top:50%;transform:translateY(-50%);left:13px;background:none;border:none;color:var(--text-light);cursor:pointer;font-size:16px;padding:4px;transition:.2s}
+.gate-eye:hover{color:var(--primary)}
+.gate-err{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;padding:9px 14px;border-radius:var(--rs);font-size:13px;font-weight:700;margin-bottom:12px;display:none;animation:shake .35s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.gate-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;border-radius:var(--rs);font-family:'Cairo',sans-serif;font-size:15px;font-weight:900;cursor:pointer;transition:.22s;display:flex;align-items:center;justify-content:center;gap:9px;margin-top:6px}
+.gate-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(107,66,38,.35)}
+.gate-footer{font-size:11.5px;color:var(--text-light);margin-top:18px}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .dash-links{display:none}
+}
+@media(max-width:500px){
+  .wrap{padding:20px 14px}
+  .products-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<!-- PASSWORD GATE -->
+<div id="gateOverlay" class="gate-overlay">
+  <div class="gate-box">
+    <div class="gate-ico"><i class="fa-solid fa-lock"></i></div>
+    <div class="gate-ttl">لوحة التحكم</div>
+    <div class="gate-sub">متجر الرفوف العصرية — دخول التجار</div>
+    <label class="gate-lbl" for="gateInp">كلمة السر</label>
+    <div class="gate-inp-wrap">
+      <input type="password" id="gateInp" class="gate-inp" placeholder="• • • • • •" maxlength="20"
+             onkeydown="if(event.key==='Enter') checkGate()">
+      <button class="gate-eye" onclick="toggleGateEye()" id="gateEye" title="إظهار / إخفاء">
+        <i class="fa-solid fa-eye" id="gateEyeIco"></i>
+      </button>
+    </div>
+    <div id="gateErr" class="gate-err">❌ كلمة السر غلط، حاول مجدداً</div>
+    <button class="gate-btn" onclick="checkGate()">
+      <i class="fa-solid fa-unlock-keyhole"></i> دخول
+    </button>
+    <div class="gate-footer">للتجار المعتمدين فقط</div>
+  </div>
+</div>
+
+<header class="dash-header">
+  <div class="dash-inner">
+    <a href="index.html" class="dash-logo">
+      <div class="dash-logo-ico"><i class="fa-solid fa-layer-group"></i></div>
+      <div>
+        <div class="dash-logo-name">لوحة التحكم</div>
+        <div class="dash-logo-sub">متجر الرفوف العصرية</div>
+      </div>
+    </a>
+    <nav class="dash-links">
+      <a href="index.html"><i class="fa-solid fa-store"></i> المتجر</a>
+      <a href="dashboard.html" class="active"><i class="fa-solid fa-gauge"></i> التحكم</a>
+      <a href="product.html?admin=1"><i class="fa-solid fa-plus-circle"></i> إضافة منتج</a>
+    </nav>
+    <a href="product.html?admin=1" class="dash-add-btn">
+      <i class="fa-solid fa-plus"></i> منتج جديد
+    </a>
+  </div>
+</header>
+
+<div class="page">
+<div class="wrap">
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-ico si-br"><i class="fa-solid fa-box-open"></i></div>
+      <div><div class="stat-val" id="statTotal">—</div><div class="stat-lbl">إجمالي المنتجات</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico si-gr"><i class="fa-solid fa-tags"></i></div>
+      <div><div class="stat-val" id="statMin">—</div><div class="stat-lbl">أدنى سعر</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico si-ye"><i class="fa-solid fa-arrow-trend-up"></i></div>
+      <div><div class="stat-val" id="statMax">—</div><div class="stat-lbl">أعلى سعر</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico si-bl"><i class="fa-solid fa-calculator"></i></div>
+      <div><div class="stat-val" id="statAvg">—</div><div class="stat-lbl">متوسط السعر</div></div>
+    </div>
+  </div>
+
+  <!-- Add Product Banner -->
+  <div class="add-banner">
+    <div class="add-banner-ttl">هل بغيت تزيد منتج جديد في المتجر؟</div>
+    <a href="product.html?admin=1" class="btn-add-big">
+      <i class="fa-solid fa-plus-circle"></i>
+      إضافة منتج جديد
+    </a>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <i class="fa-solid fa-magnifying-glass search-ico"></i>
+      <input type="text" class="search-inp" id="searchInp" placeholder="بحث باسم المنتج..." oninput="filterProducts()">
+    </div>
+    <select class="sort-sel" id="sortSel" onchange="filterProducts()">
+      <option value="newest">الأحدث أولاً</option>
+      <option value="oldest">الأقدم أولاً</option>
+      <option value="price_asc">السعر: من الأقل للأعلى</option>
+      <option value="price_desc">السعر: من الأعلى للأقل</option>
+      <option value="name">الاسم أبجدياً</option>
+    </select>
+  </div>
+
+  <!-- Section Title -->
+  <div class="sec-row">
+    <div class="sec-ttl">
+      <i class="fa-solid fa-boxes-stacked"></i>
+      قائمة المنتجات
+      <span class="count-badge" id="countBadge">0</span>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" id="productsGrid">
+    <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-line w60 skeleton"></div><div class="skel-line w35 skeleton"></div></div></div>
+    <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-line w60 skeleton"></div><div class="skel-line w35 skeleton"></div></div></div>
+    <div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton"></div><div class="skel-line w60 skeleton"></div><div class="skel-line w35 skeleton"></div></div></div>
+  </div>
+
+</div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="modal-ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
+    <div class="modal-ttl">تأكيد الحذف</div>
+    <div class="modal-sub" id="modalSub">هل أنت متأكد؟ هاد العملية ما كيمكنش تراجع منها.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()"><i class="fa-solid fa-xmark"></i> إلغاء</button>
+      <button class="modal-confirm" id="confirmDelBtn" onclick="confirmDelete()">
+        <i class="fa-solid fa-trash"></i> حذف نهائياً
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   PASSWORD GATE
+══════════════════════════════════════════ */
+var GATE_PASS = '2026';
+
+(function() {
+  if (sessionStorage.getItem('merchant_auth') === '1') {
+    document.getElementById('gateOverlay').classList.add('gone');
+  } else {
+    setTimeout(function(){
+      var inp = document.getElementById('gateInp');
+      if (inp) inp.focus();
+    }, 350);
+  }
+})();
+
+function checkGate() {
+  var val    = document.getElementById('gateInp').value;
+  var errDiv = document.getElementById('gateErr');
+  if (val === GATE_PASS) {
+    sessionStorage.setItem('merchant_auth', '1');
+    var overlay = document.getElementById('gateOverlay');
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity .4s ease';
+    setTimeout(function(){ overlay.classList.add('gone'); }, 400);
+  } else {
+    errDiv.style.display = 'block';
+    errDiv.style.animation = 'none';
+    void errDiv.offsetHeight; // reflow to restart animation
+    errDiv.style.animation = 'shake .35s ease';
+    document.getElementById('gateInp').value = '';
+    document.getElementById('gateInp').focus();
+    setTimeout(function(){ errDiv.style.display = 'none'; }, 3000);
+  }
+}
+
+function toggleGateEye() {
+  var inp = document.getElementById('gateInp');
+  var ico = document.getElementById('gateEyeIco');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    ico.className = 'fa-solid fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    ico.className = 'fa-solid fa-eye';
+  }
+}
+
+/* ══════════════════════════════════════════
+   SUPABASE CONFIG
+══════════════════════════════════════════ */
+var SB_URL = 'https://bylisjawltitosfbtwzw.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5bGlzamF3bHRpdG9zZmJ0d3p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTYwNzEsImV4cCI6MjA5NDQzMjA3MX0.aRq9q5qV8_0lwiv5rQQRaHcb7GdBBjNmxcOtV1mfvdE';
+var db = window.supabase.createClient(SB_URL, SB_KEY);
+
+var allProducts   = [];
+var pendingDelete = null; // { id, imagePath, name }
+
+/* ══════════════════════════════════════════
+   LOAD ALL PRODUCTS
+══════════════════════════════════════════ */
+async function loadProducts() {
+  try {
+    var res = await db.from('products').select('*').order('created_at', { ascending: false });
+    if (res.error) throw res.error;
+    allProducts = res.data || [];
+    updateStats();
+    filterProducts();
+  } catch (err) {
+    showToast('❌ فشل تحميل المنتجات: ' + err.message, 'err');
+    document.getElementById('productsGrid').innerHTML =
+      '<div class="empty-state">' +
+      '<div class="empty-ico"><i class="fa-solid fa-circle-exclamation" style="color:#dc2626"></i></div>' +
+      '<div class="empty-ttl">خطأ في الاتصال</div>' +
+      '<div class="empty-sub">' + esc(err.message) + '</div>' +
+      '</div>';
+  }
+}
+
+/* ══════════════════════════════════════════
+   STATS
+══════════════════════════════════════════ */
+function updateStats() {
+  var prices = allProducts.map(function(p){ return Number(p.price); }).filter(function(v){ return !isNaN(v) && v > 0; });
+  document.getElementById('statTotal').textContent = allProducts.length;
+  document.getElementById('statMin').textContent   = prices.length ? Math.min.apply(null, prices) + ' دره' : '—';
+  document.getElementById('statMax').textContent   = prices.length ? Math.max.apply(null, prices) + ' دره' : '—';
+  document.getElementById('statAvg').textContent   = prices.length ? Math.round(prices.reduce(function(a,b){ return a+b; }, 0) / prices.length) + ' دره' : '—';
+}
+
+/* ══════════════════════════════════════════
+   FILTER + SORT
+══════════════════════════════════════════ */
+function filterProducts() {
+  var q    = document.getElementById('searchInp').value.trim().toLowerCase();
+  var sort = document.getElementById('sortSel').value;
+
+  var list = allProducts.filter(function(p){
+    return !q || (p.name || '').toLowerCase().includes(q);
+  });
+
+  if      (sort === 'price_asc')  list.sort(function(a,b){ return a.price - b.price; });
+  else if (sort === 'price_desc') list.sort(function(a,b){ return b.price - a.price; });
+  else if (sort === 'name')       list.sort(function(a,b){ return (a.name||'').localeCompare(b.name||'','ar'); });
+  else if (sort === 'oldest')     list.sort(function(a,b){ return new Date(a.created_at) - new Date(b.created_at); });
+
+  renderCards(list);
+}
+
+/* ══════════════════════════════════════════
+   RENDER CARDS
+══════════════════════════════════════════ */
+function renderCards(list) {
+  document.getElementById('countBadge').textContent = list.length;
+  var grid = document.getElementById('productsGrid');
+
+  if (!list.length) {
+    grid.innerHTML =
+      '<div class="empty-state">' +
+      '<div class="empty-ico"><i class="fa-solid fa-box-open"></i></div>' +
+      '<div class="empty-ttl">لا توجد منتجات</div>' +
+      '<div class="empty-sub">ما كاين حتى منتج مضاف حاليًا</div>' +
+      '<a href="product.html?admin=1" class="empty-action"><i class="fa-solid fa-plus"></i> أضف منتجك الأول</a>' +
+      '</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(function(p) {
+    var dateStr = '';
+    if (p.created_at) {
+      dateStr = new Date(p.created_at).toLocaleDateString('ar-MA', { day:'numeric', month:'short', year:'numeric' });
+    }
+
+    var imgHtml = p.image_url
+      ? '<img class="card-img" src="' + esc(p.image_url) + '" alt="' + esc(p.name||'') + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+      : '';
+
+    var tagsHtml = '';
+    if (p.color) tagsHtml += '<span class="tag tag-color"><i class="fa-solid fa-circle" style="font-size:8px"></i> ' + esc(p.color) + '</span>';
+    if (p.size)  tagsHtml += '<span class="tag tag-size"><i class="fa-solid fa-ruler-combined"></i> ' + esc(p.size) + '</span>';
+
+    return (
+      '<div class="prod-card">' +
+        '<div class="card-img-wrap">' +
+          imgHtml +
+          '<div class="card-img-ph" ' + (p.image_url ? 'style="display:none"' : '') + '>' +
+            '<i class="fa-solid fa-image"></i><span>لا توجد صورة</span>' +
+          '</div>' +
+          (dateStr ? '<div class="card-date">' + dateStr + '</div>' : '') +
+        '</div>' +
+        '<div class="card-body">' +
+          '<div class="card-name">' + esc(p.name || '—') + '</div>' +
+          (p.description ? '<div class="card-desc">' + esc(p.description) + '</div>' : '') +
+          (tagsHtml ? '<div class="card-tags">' + tagsHtml + '</div>' : '') +
+          '<div class="card-footer">' +
+            '<div class="card-price">' + (p.price||0) + ' <small>درهم</small></div>' +
+            '<button class="del-btn" onclick="askDelete(\'' + escAttr(String(p.id)) + '\',\'' + escAttr(p.image_url||'') + '\',\'' + escAttr(p.name||'') + '\')">' +
+              '<i class="fa-solid fa-trash"></i> حذف' +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+}
+
+/* ══════════════════════════════════════════
+   DELETE FLOW
+══════════════════════════════════════════ */
+function askDelete(id, imageUrl, name) {
+  pendingDelete = { id: id, imageUrl: imageUrl, name: name };
+  document.getElementById('modalSub').textContent = 'هل متأكد من حذف "' + name + '"؟ الصورة والبيانات غتتمسح نهائياً.';
+  document.getElementById('modalBg').classList.add('open');
+}
+
+function closeModal() {
+  pendingDelete = null;
+  document.getElementById('modalBg').classList.remove('open');
+}
+
+async function confirmDelete() {
+  if (!pendingDelete) return;
+  var id       = pendingDelete.id;
+  var imageUrl = pendingDelete.imageUrl;
+  var name     = pendingDelete.name;
+  var btn      = document.getElementById('confirmDelBtn');
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحذف...';
+
+  try {
+    /* 1 — Delete image from Storage */
+    if (imageUrl) {
+      var storagePath = getStoragePath(imageUrl);
+      if (storagePath) {
+        var storageRes = await db.storage.from('products').remove([storagePath]);
+        if (storageRes.error) console.warn('تحذير Storage:', storageRes.error.message);
+      }
+    }
+
+    /* 2 — Delete row from DB */
+    var dbRes = await db.from('products').delete().eq('id', id);
+    if (dbRes.error) throw dbRes.error;
+
+    /* 3 — Update local list */
+    allProducts = allProducts.filter(function(p){ return String(p.id) !== String(id); });
+    updateStats();
+    filterProducts();
+    closeModal();
+    showToast('✅ تم حذف "' + name + '" بنجاح', 'ok');
+
+  } catch (err) {
+    showToast('❌ خطأ: ' + err.message, 'err');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-trash"></i> حذف نهائياً';
+  }
+}
+
+/* ══════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════ */
+function getStoragePath(imageUrl) {
+  try {
+    var marker = '/object/public/products/';
+    var idx = imageUrl.indexOf(marker);
+    return idx !== -1 ? imageUrl.slice(idx + marker.length) : null;
+  } catch(e) { return null; }
+}
+
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function escAttr(str) {
+  return String(str).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+}
+
+/* ── Toast ── */
+var _toastTimer;
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'toast' + (type ? ' ' + type : '') + ' show';
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 3500);
+}
+
+/* ── Close modal on backdrop click ── */
+document.getElementById('modalBg').addEventListener('click', function(e){
+  if (e.target === this) closeModal();
+});
+
+/* ── Boot ── */
+loadProducts();
+</script>
+</body>
+</html>
