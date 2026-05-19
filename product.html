@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>تفاصيل المنتج – متجر الرفوف العصرية</title>
+<title>تفاصيل المنتج – عثمان لدراجات الهوائية</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -195,8 +195,8 @@ textarea.f-inp{resize:vertical;min-height:90px;line-height:1.65}
       <span class="fr">Retour</span>
     </a>
     <div class="nav-brand">
-      <span class="ar">متجر الرفوف العصرية</span>
-      <span class="fr">Étagères Modernes</span>
+      <span class="ar">عثمان لدراجات الهوائية</span>
+      <span class="fr">Othman Cycles</span>
     </div>
     <button class="lang-btn" id="langBtn" onclick="toggleLang()">🇫🇷 FR</button>
   </div>
@@ -368,7 +368,7 @@ textarea.f-inp{resize:vertical;min-height:90px;line-height:1.65}
 <div class="wa-float">
   <div class="wa-tip ar">تواصل معنا</div>
   <div class="wa-tip fr">Nous contacter</div>
-  <a href="https://wa.me/212771263305" target="_blank">
+  <a href="https://wa.me/212721203554" target="_blank">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
 </div>
@@ -380,147 +380,39 @@ textarea.f-inp{resize:vertical;min-height:90px;line-height:1.65}
 const PRODUCTS = {
 
   1: {
-    name: { ar: 'رف جداري عصري صغير — خشب MDF', fr: 'Étagère Murale Moderne — Bois MDF (Petite)' },
-    sub:  { ar: 'مثالي للمطبخ، الصالون أو أي مساحة داخل المنزل', fr: 'Idéale pour cuisine, salon ou tout espace intérieur' },
-    price: 180,
-    imgs: ['images/product1/dims_p1.jpeg','images/product1/white.jpeg','images/product1/Gray.jpeg','images/product1/p1_2.jpg'],
+    name: { ar: 'سمية منتج تجريبي أول', fr: 'Produit Test Exemple 1' },
+    sub:  { ar: 'منتج تجريبي افتراضي لواجهة المتجر', fr: 'Produit de démonstration pour l’interface' },
+    price: 199,
+    imgs: [
+      'https://via.placeholder.com/800x800/1d4ed8/ffffff?text=%D8%AF%D8%B1%D8%A7%D8%AC%D8%A9+%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%D8%A9+1',
+      'https://via.placeholder.com/800x800/2563eb/ffffff?text=%D8%AF%D8%B1%D8%A7%D8%AC%D8%A9+%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%D8%A9+2',
+      'https://via.placeholder.com/800x800/1e3a8a/ffffff?text=%D8%AF%D8%B1%D8%A7%D8%AC%D8%A9+%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%D8%A9+3',
+      'https://via.placeholder.com/800x800/60a5fa/ffffff?text=%D8%AF%D8%B1%D8%A7%D8%AC%D8%A9+%D8%AA%D8%AC%D8%B1%D9%8A%D8%A8%D9%8A%D8%A9+4'
+    ],
     desc: {
       ar: `
-        <p class="desc-p">رف جداري عصري بتصميم مودرن وأنيق، مثالي لتنظيم وتزيين المطبخ، الصالون أو أي مساحة داخل المنزل. مصنوع من خشب MDF عالي الجودة بتشطيب خشبي طبيعي يمنح لمسة دافئة وفخمة تناسب مختلف أنماط الديكور العصري.</p>
-        <p class="desc-p">التصميم العملي يوفر مساحات متعددة لترتيب التوابل، الأواني الصغيرة، الكتب أو قطع الديكور بشكل منظم وأنيق، مع استغلال مثالي للمساحة على الحائط.</p>
+        <p class="desc-p">هذا منتج تجريبي جديد يعرض شكل المنتج الافتراضي في واجهة المتجر. تم تصميمه ليعطي انطباعاً احترافياً حتى يبدأ العميل بإضافة منتجاته الخاصة.</p>
         <div class="feat-list">
-          <p>✅ مصنوع من خشب MDF متين وعالي الجودة</p>
-          <p>✅ تصميم عصري مناسب لجميع الديكورات</p>
-          <p>✅ سهل التركيب والتنظيف</p>
-          <p>✅ عملي لتنظيم المساحات الصغيرة</p>
-          <p>✅ تشطيب خشبي أنيق ولمسة مودرن</p>
-          <p>🚚 التوصيل فابور لجميع الطلبات</p>
+          <p>✅ سعر تجريبي ثابت</p>
+          <p>✅ رابط واتساب ذكي للطلب</p>
+          <p>✅ سلايدر صور احترافي بأربع صور</p>
+          <p>✅ وصف مختصر ومناسب للواجهة</p>
+          <p>✅ صورة مؤقتة Placeholder حتى يتم رفع صور المنتج الحقيقي</p>
         </div>
-        <div class="sec-title" style="margin-top:18px"><i class="fa-solid fa-circle-question"></i> الأسئلة الشائعة</div>
-        <div class="faq-item"><div class="faq-q">❓ شنو نوع الخشب المستعمل؟</div><div class="faq-a">المنتج مصنوع من خشب MDF عالي الجودة بتشطيب أنيق ومتين.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش الرف مناسب للمطبخ؟</div><div class="faq-a">نعم، مثالي لتنظيم التوابل، الأواني الصغيرة وقطع الديكور داخل المطبخ.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش يمكن استعمالو فغرف أخرى؟</div><div class="faq-a">أكيد، يمكن استعماله في الصالون، غرفة النوم، المكتب أو حتى المدخل.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش التركيب ساهل؟</div><div class="faq-a">نعم، الرف سهل التركيب ويأتي بتصميم عملي مناسب للحائط.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش التوصيل متوفر؟</div><div class="faq-a">نعم 🚚 التوصيل فابور.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش اللون كيكون نفس الصورة؟</div><div class="faq-a">نعم، مع احتمال اختلاف بسيط بسبب الإضاءة أو إعدادات الشاشة.</div></div>
       `,
       fr: `
-        <p class="desc-p">Étagère murale moderne avec un design élégant, idéale pour organiser et décorer la cuisine, le salon ou tout espace de la maison. Fabriquée en bois MDF haute qualité avec une finition naturelle chaleureuse et luxueuse adaptée à tous les styles de décoration modernes.</p>
-        <p class="desc-p">Le design pratique offre plusieurs espaces pour ranger les épices, les petits ustensiles, les livres ou les pièces décoratives de manière organisée et élégante, avec une utilisation optimale de l'espace mural.</p>
+        <p class="desc-p">Ceci est un produit de démonstration affiché dans l'interface du magasin. Il est conçu pour donner une présentation professionnelle jusqu'à ce que le client ajoute son propre produit.</p>
         <div class="feat-list">
-          <p>✅ Fabriquée en bois MDF solide et de haute qualité</p>
-          <p>✅ Design moderne adapté à tous les décors</p>
-          <p>✅ Facile à installer et à nettoyer</p>
-          <p>✅ Pratique pour organiser les petits espaces</p>
-          <p>✅ Finition bois élégante et touche moderne</p>
-          <p>🚚 Livraison gratuite pour toutes les commandes</p>
+          <p>✅ Prix d'exemple fixe</p>
+          <p>✅ Lien WhatsApp intelligent pour commande</p>
+          <p>✅ Slider d'images professionnel avec quatre images</p>
+          <p>✅ Description courte adaptée à l'interface</p>
+          <p>✅ Image de remplacement Placeholder jusqu'à l'ajout de vraies photos</p>
         </div>
-        <div class="sec-title" style="margin-top:18px"><i class="fa-solid fa-circle-question"></i> Questions Fréquentes</div>
-        <div class="faq-item"><div class="faq-q">❓ Quel type de bois est utilisé ?</div><div class="faq-a">Le produit est fabriqué en bois MDF haute qualité avec une finition élégante et durable.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ L'étagère convient-elle à la cuisine ?</div><div class="faq-a">Oui, idéale pour organiser les épices, les petits ustensiles et les objets décoratifs.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ Peut-on l'utiliser dans d'autres pièces ?</div><div class="faq-a">Absolument, utilisable dans le salon, la chambre, le bureau ou l'entrée.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ L'installation est-elle facile ?</div><div class="faq-a">Oui, l'étagère est facile à installer avec un design pratique adapté au mur.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ La livraison est-elle disponible ?</div><div class="faq-a">Oui 🚚 livraison gratuite.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ La couleur est-elle identique à la photo ?</div><div class="faq-a">Oui, avec une légère différence possible due à l'éclairage ou aux paramètres d'écran.</div></div>
       `
     }
   },
 
-  2: {
-    name: { ar: 'رفوف جدارية عصرية كبيرة — خشب MDF', fr: 'Étagères Murales Modernes — Bois MDF (Grandes)' },
-    sub:  { ar: 'مثالية للحمام، الصالون، غرفة النوم أو المكتب', fr: 'Idéales pour salle de bain, salon, chambre ou bureau' },
-    price: 219,
-    imgs: ['images/product2/dims_p2.jpeg','images/product2/p2_oak.jpg','images/product2/p2_gray.jpg','images/product2/p2_white.jpg'],
-    desc: {
-      ar: `
-        <p class="desc-p">رفوف حائط عصرية بتصميم أنيق يضيف لمسة فخامة وتنظيم لأي حمام أو غرفة. مصنوعة من خشب MDF عالي الجودة المعروف بالمتانة والسطح الناعم والتشطيب العصري، مع تصميم عملي يوفر مساحات تخزين متعددة لوضع مستلزمات الحمام، الديكور أو الإكسسوارات بطريقة مرتبة وأنيقة.</p>
-        <p class="desc-p">مثالية للحمامات العصرية، الصالونات، غرف النوم وحتى المكاتب، حيث تجمع بين الجمالية والوظيفة في نفس الوقت.</p>
-        <div class="feat-list">
-          <p>✅ تصميم مودرن وأنيق</p>
-          <p>✅ خشب MDF قوي وعالي الجودة</p>
-          <p>✅ سهل التركيب والتنظيف</p>
-          <p>✅ مناسب لمختلف الديكورات</p>
-          <p>✅ مساحات تخزين عملية ومنظمة</p>
-          <p>🚚 التوصيل متوفر بالمجان (فابور)</p>
-        </div>
-        <div class="sec-title" style="margin-top:18px"><i class="fa-solid fa-circle-question"></i> الأسئلة الشائعة</div>
-        <div class="faq-item"><div class="faq-q">❓ شنو نوع الخشب المستعمل؟</div><div class="faq-a">المنتج مصنوع من خشب MDF عالي الجودة بتشطيب عصري ومتين.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش الرفوف مقاومة للرطوبة؟</div><div class="faq-a">نعم، مناسبة للاستعمال اليومي داخل الحمام مع الحفاظ عليها من تعرض مباشر ومفرط للماء.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش التركيب ساهل؟</div><div class="faq-a">نعم، الرفوف سهلة التركيب وتجي بتصميم عملي مناسب للحائط.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش التوصيل متوفر؟</div><div class="faq-a">نعم 🚚 التوصيل فابور لجميع الطلبات.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ فين يمكن نستعمل هاد الرفوف؟</div><div class="faq-a">يمكن استعمالها في الحمام، غرفة النوم، الصالون، المطبخ أو المكتب.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش اللون كيبقى نفس اللي فالصورة؟</div><div class="faq-a">نعم، نحاول نوفر نفس اللون والتشطيب كما هو موضح في الصور، مع احتمال فرق خفيف بسبب الإضاءة.</div></div>
-      `,
-      fr: `
-        <p class="desc-p">Étagères murales modernes avec un design élégant qui apporte une touche de luxe et d'organisation à toute salle de bain ou chambre. Fabriquées en bois MDF haute qualité reconnu pour sa solidité, sa surface lisse et sa finition moderne.</p>
-        <p class="desc-p">Idéales pour les salles de bain modernes, les salons, les chambres et même les bureaux, alliant esthétique et fonctionnalité dans le même temps.</p>
-        <div class="feat-list">
-          <p>✅ Design moderne et élégant</p>
-          <p>✅ Bois MDF solide et de haute qualité</p>
-          <p>✅ Facile à installer et à nettoyer</p>
-          <p>✅ Adapté à tous les types de décoration</p>
-          <p>✅ Espaces de rangement pratiques et organisés</p>
-          <p>🚚 Livraison disponible gratuitement</p>
-        </div>
-        <div class="sec-title" style="margin-top:18px"><i class="fa-solid fa-circle-question"></i> Questions Fréquentes</div>
-        <div class="faq-item"><div class="faq-q">❓ Quel type de bois est utilisé ?</div><div class="faq-a">Le produit est fabriqué en bois MDF haute qualité avec une finition moderne et durable.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ Les étagères résistent-elles à l'humidité ?</div><div class="faq-a">Oui, adaptées à un usage quotidien en salle de bain, en évitant une exposition directe excessive à l'eau.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ L'installation est-elle facile ?</div><div class="faq-a">Oui, les étagères sont faciles à installer avec un design pratique adapté au mur.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ La livraison est-elle disponible ?</div><div class="faq-a">Oui 🚚 livraison gratuite pour toutes les commandes.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ Où peut-on utiliser ces étagères ?</div><div class="faq-a">Dans la salle de bain, la chambre, le salon, la cuisine ou le bureau.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ La couleur est-elle identique à la photo ?</div><div class="faq-a">Oui, nous essayons de fournir la même couleur que sur les photos, avec une légère différence possible due à l'éclairage.</div></div>
-      `
-    }
-  },
-
-  3: {
-    name: { ar: 'كوافوز Smart RIDKA — خشب MDF بقفل RFID', fr: 'Table de Nuit Smart RIDKA — Bois MDF (Serrure RFID)' },
-    sub:  { ar: 'أمان وتقنية في قطعة أثاث واحدة لغرفة النوم', fr: 'Sécurité et technologie réunis dans un meuble de chambre' },
-    price: 849,
-    imgs: ['images/product3/ccc1.jpeg','images/product3/CCC2.jpeg','images/product3/CCC3.jpeg','images/product3/CCC4.jpeg'],
-    desc: {
-      ar: `
-        <p class="desc-p">وداعاً للمفاتيح التقليدية! تقدم لك <strong>RIDKA</strong> هذه الكوافوز العصرية التي تمزج بين جمال الخشب الطبيعي وأحدث تقنيات القفل الإلكتروني. مصنوعة من خشب MDF الممتاز، تمنح غرفتك لمسة من الذكاء والفخامة في آنٍ واحد.</p>
-        <p class="desc-p">الغطاء العلوي مزود بقفل RFID مخفي لا يفتح إلا عبر بطاقتك الذكية الخاصة، مما يضمن حماية تامة لمقتنياتك الشخصية. بمجرد تمرير البطاقة، يفتح الغطاء بهدوء وسلاسة بفضل المكبس الهيدروليكي عالي الجودة.</p>
-        <div class="feat-list">
-          <p>🔒 قفل RFID ذكي — يفتح فقط ببطاقتك الخاصة</p>
-          <p>✅ هيدروليك سلس وهادئ لفتح الغطاء العلوي</p>
-          <p>✅ تصميم مودرن فاخر — لون خشبي دافئ</p>
-          <p>✅ مقابض ألمنيوم أنيقة للأدراج السفلية</p>
-          <p>✅ درجان واسعان + مساحة علوية سرية</p>
-          <p>✅ مصنوع من خشب MDF الممتاز بتشطيب احترافي</p>
-          <p>🚚 التوصيل فابور لجميع الطلبات</p>
-        </div>
-        <div class="sec-title" style="margin-top:18px"><i class="fa-solid fa-circle-question"></i> الأسئلة الشائعة</div>
-        <div class="faq-item"><div class="faq-q">❓ كيفاش كيخدم القفل الذكي؟</div><div class="faq-a">القفل يشتغل بتقنية RFID، بمجرد ما تمرر البطاقة الذكية المرفقة فوق الغطاء، يفتح تلقائياً بشكل هادئ.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش يجي مع بطاقة؟</div><div class="faq-a">نعم، المنتج يجي مع بطاقة RFID خاصة به.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش الهيدروليك متين؟</div><div class="faq-a">نعم، مصنوع من معدن عالي الجودة ومصمم للاستعمال اليومي لسنوات.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش التركيب ساهل؟</div><div class="faq-a">نعم، يجي مع تعليمات التركيب وكل الأدوات اللازمة.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش التوصيل متوفر؟</div><div class="faq-a">نعم 🚚 التوصيل فابور لجميع الطلبات في المغرب.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ واش اللون كيبقى نفس الصورة؟</div><div class="faq-a">نعم، مع احتمال اختلاف بسيط بسبب الإضاءة أو إعدادات الشاشة.</div></div>
-      `,
-      fr: `
-        <p class="desc-p">Dites adieu aux clés traditionnelles ! <strong>RIDKA</strong> vous présente cette table de nuit moderne qui allie la beauté du bois naturel aux dernières technologies de verrouillage électronique. Fabriquée en bois MDF premium, elle apporte une touche d'intelligence et de luxe à votre chambre.</p>
-        <p class="desc-p">Le couvercle supérieur est équipé d'une serrure RFID cachée qui ne s'ouvre qu'avec votre carte intelligente personnelle, garantissant une protection totale de vos affaires. Une fois la carte passée, le couvercle s'ouvre silencieusement grâce au piston hydraulique haute qualité.</p>
-        <div class="feat-list">
-          <p>🔒 Serrure RFID intelligente — s'ouvre uniquement avec votre carte</p>
-          <p>✅ Hydraulique silencieux et fluide pour l'ouverture du couvercle</p>
-          <p>✅ Design moderne luxueux — teinte bois chaleureuse</p>
-          <p>✅ Poignées en aluminium élégantes pour les tiroirs</p>
-          <p>✅ Deux grands tiroirs + compartiment secret supérieur</p>
-          <p>✅ Bois MDF premium avec finition professionnelle</p>
-          <p>🚚 Livraison gratuite pour toutes les commandes</p>
-        </div>
-        <div class="sec-title" style="margin-top:18px"><i class="fa-solid fa-circle-question"></i> Questions Fréquentes</div>
-        <div class="faq-item"><div class="faq-q">❓ Comment fonctionne la serrure intelligente ?</div><div class="faq-a">La serrure fonctionne par technologie RFID. Il suffit de passer la carte intelligente fournie sur le couvercle pour qu'il s'ouvre automatiquement et silencieusement.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ La carte est-elle incluse ?</div><div class="faq-a">Oui, le produit est livré avec sa propre carte RFID.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ Le système hydraulique est-il solide ?</div><div class="faq-a">Oui, il est fabriqué en métal haute qualité et conçu pour un usage quotidien pendant des années.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ L'installation est-elle facile ?</div><div class="faq-a">Oui, livré avec les instructions de montage et tous les outils nécessaires.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ La livraison est-elle disponible ?</div><div class="faq-a">Oui 🚚 livraison gratuite pour toutes les commandes au Maroc.</div></div>
-        <div class="faq-item"><div class="faq-q">❓ La couleur est-elle identique à la photo ?</div><div class="faq-a">Oui, avec une légère différence possible due à l'éclairage ou aux paramètres d'écran.</div></div>
-      `
-    }
-  }
 
 };
 
@@ -555,7 +447,7 @@ function loadProduct() {
     p.price + '<small style="font-size:14px;color:var(--text-light);font-weight:600"> ' +
     (lang === 'ar' ? 'درهم' : 'Dh') + '</small>';
   document.getElementById('gPhTxt').textContent = p.name[lang] || p.name.ar;
-  document.title = (p.name[lang] || p.name.ar) + ' – متجر الرفوف';
+  document.title = (p.name[lang] || p.name.ar) + ' – عثمان لدراجات الهوائية';
 
   // gallery
   curImg = 0;
@@ -635,7 +527,7 @@ function updateWaLink() {
   var msg = lang === 'ar'
     ? 'السلام عليكم، بغيت نطلب ' + p.name.ar + ' (' + p.price + ' درهم)'
     : 'Bonjour, je veux commander ' + p.name.fr + ' (' + p.price + ' Dh)';
-  var url = 'https://wa.me/212771263305?text=' + encodeURIComponent(msg);
+  var url = 'https://wa.me/212721203554?text=' + encodeURIComponent(msg);
   document.getElementById('btnWa').href    = url;
   document.getElementById('stickyWa').href = url;
 }
@@ -696,7 +588,7 @@ function displayDBProduct(p) {
     price + '<small style="font-size:14px;color:var(--text-light);font-weight:600"> ' +
     (lang === 'ar' ? 'درهم' : 'Dh') + '</small>';
   document.getElementById('gPhTxt').textContent = name;
-  document.title = name + ' – متجر الرفوف';
+  document.title = name + ' – عثمان لدراجات الهوائية';
 
   /* ── Gallery (4 صور محتملة) ── */
   var imgs = [p.image_url, p.image_url2, p.image_url3, p.image_url4].filter(Boolean);
@@ -706,7 +598,7 @@ function displayDBProduct(p) {
   var waMsg = lang === 'ar'
     ? 'السلام عليكم، بغيت نطلب ' + name + ' (' + price + ' درهم)'
     : 'Bonjour, je veux commander ' + name + ' (' + price + ' Dh)';
-  var waUrl = 'https://wa.me/212771263305?text=' + encodeURIComponent(waMsg);
+  var waUrl = 'https://wa.me/212721203554?text=' + encodeURIComponent(waMsg);
   document.getElementById('btnWa').href    = waUrl;
   document.getElementById('stickyWa').href = waUrl;
 
@@ -870,8 +762,8 @@ function share() {
 /* ══════════════════════════════════════════════════════
    SUPABASE — Admin panel logic
 ══════════════════════════════════════════════════════ */
-var _SB_URL = 'https://bylisjawltitosfbtwzw.supabase.co';
-var _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5bGlzamF3bHRpdG9zZmJ0d3p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTYwNzEsImV4cCI6MjA5NDQzMjA3MX0.aRq9q5qV8_0lwiv5rQQRaHcb7GdBBjNmxcOtV1mfvdE';
+var _SB_URL = 'https://aakqduswtaukntedhonp.supabase.co';
+var _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFha3FkdXN3dGF1a250ZWRob25wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMzY1NjksImV4cCI6MjA5NDcxMjU2OX0.kqUXN73oTZnN2FGAjluX5ybXMIVcsttDchHr69eqfd8';
 var _db = window.supabase.createClient(_SB_URL, _SB_KEY);
 
 /* Open admin modal when ?admin=1 — requires merchant auth */
