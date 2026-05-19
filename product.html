@@ -195,8 +195,8 @@ textarea.f-inp{resize:vertical;min-height:90px;line-height:1.65}
       <span class="fr">Retour</span>
     </a>
     <div class="nav-brand">
-      <span class="ar">عثمان لدراجات الهوائية</span>
-      <span class="fr">Othman Cycles</span>
+      <span class="ar">عثمان للدراجات النارية</span>
+      <span class="fr">Othman Moto</span>
     </div>
     <button class="lang-btn" id="langBtn" onclick="toggleLang()">🇫🇷 FR</button>
   </div>
@@ -447,7 +447,7 @@ function loadProduct() {
     p.price + '<small style="font-size:14px;color:var(--text-light);font-weight:600"> ' +
     (lang === 'ar' ? 'درهم' : 'Dh') + '</small>';
   document.getElementById('gPhTxt').textContent = p.name[lang] || p.name.ar;
-  document.title = (p.name[lang] || p.name.ar) + ' – عثمان لدراجات الهوائية';
+  document.title = (p.name[lang] || p.name.ar) + ' – عثمان للدراجات النارية';
 
   // gallery
   curImg = 0;
@@ -588,7 +588,7 @@ function displayDBProduct(p) {
     price + '<small style="font-size:14px;color:var(--text-light);font-weight:600"> ' +
     (lang === 'ar' ? 'درهم' : 'Dh') + '</small>';
   document.getElementById('gPhTxt').textContent = name;
-  document.title = name + ' – عثمان لدراجات الهوائية';
+  document.title = name + ' – عثمان للدراجات النارية';
 
   /* ── Gallery (4 صور محتملة) ── */
   var imgs = [p.image_url, p.image_url2, p.image_url3, p.image_url4].filter(Boolean);
