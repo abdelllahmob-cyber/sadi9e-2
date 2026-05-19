@@ -832,6 +832,33 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* ── Submit: رفع 6 صور وإدخال صف واحد ── */
+/* تحويل الصورة إلى base64 مضغوطة (max 900px) */
+function imageToBase64(file) {
+  return new Promise(function(resolve) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        var MAX = 900;
+        var w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          var r = Math.min(MAX / w, MAX / h);
+          w = Math.round(w * r);
+          h = Math.round(h * r);
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.80));
+      };
+      img.onerror = function() { resolve(null); };
+      img.src = e.target.result;
+    };
+    reader.onerror = function() { resolve(null); };
+    reader.readAsDataURL(file);
+  });
+}
+
 async function submitProduct(e) {
   e.preventDefault();
 
@@ -861,58 +888,31 @@ async function submitProduct(e) {
 
   btn.disabled = true;
   msg.style.display = 'none';
-  msg.className = 'f-msg';
 
-  var uploaded = [null, null, null, null, null, null];
-  var total    = files.filter(Boolean).length;
-  var done     = 0;
-
-  async function uploadOne(file, idx) {
-    if (!file) return;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> رفع الصورة ' + (done + 1) + '/' + total + '...';
-    var ext  = file.name.split('.').pop().toLowerCase();
-    var path = Date.now() + '-' + Math.random().toString(36).slice(2) + '-' + (idx + 1) + '.' + ext;
-
-    try {
-      var res = await _db.storage.from('products').upload(path, file, { cacheControl: '3600', upsert: false });
-      if (res.error) {
-        if (res.error.message && res.error.message.toLowerCase().includes('bucket not found')) {
-          console.warn('[DB] Storage bucket not found, continuing without image', res.error);
-          uploaded[idx] = null;
-          done++;
-          return;
-        }
-        throw res.error;
-      }
-      uploaded[idx] = _db.storage.from('products').getPublicUrl(path).data.publicUrl;
-      done++;
-    } catch (err) {
-      if (err.message && err.message.toLowerCase().includes('bucket not found')) {
-        console.warn('[DB] Storage bucket not found, continuing without image', err);
-        uploaded[idx] = null;
-        done++;
-        return;
-      }
-      throw err;
-    }
-  }
+  var total   = files.filter(Boolean).length;
+  var imgData = [null, null, null, null, null, null];
 
   try {
-    for (var i = 0; i < 6; i++) await uploadOne(files[i], i);
+    for (var i = 0; i < 6; i++) {
+      if (!files[i]) continue;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> معالجة الصورة ' + (i + 1) + '/' + total + '...';
+      imgData[i] = await imageToBase64(files[i]);
+    }
 
     var row = {
       name: name, price: price,
-      image_url:  uploaded[0],
-      image_url2: uploaded[1] || null,
-      image_url3: uploaded[2] || null,
-      image_url4: uploaded[3] || null,
-      image_url5: uploaded[4] || null,
-      image_url6: uploaded[5] || null
+      image_url:  imgData[0],
+      image_url2: imgData[1],
+      image_url3: imgData[2],
+      image_url4: imgData[3],
+      image_url5: imgData[4],
+      image_url6: imgData[5]
     };
     if (desc)  row.description = desc;
     if (color) row.color       = color;
     if (size)  row.size        = size;
 
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
     var dbRes = await _db.from('products').insert(row);
     if (dbRes.error) throw dbRes.error;
 
