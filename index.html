@@ -797,9 +797,9 @@ adjustNav();
   }
   GRID.insertAdjacentElement('afterbegin', skelWrap);
 
-  /* ── Fetch (4 صور لكل منتج) ── */
+  /* ── Fetch (6 صور لكل منتج) ── */
   sb.from('products')
-    .select('id, name, price, description, color, size, image_url, image_url2, image_url3, image_url4')
+    .select('id, name, price, description, color, size, image_url, image_url2, image_url3, image_url4, image_url5, image_url6')
     .order('created_at', { ascending: false })
     .then(function (res) {
       var sk = document.getElementById('dbSkelWrap');

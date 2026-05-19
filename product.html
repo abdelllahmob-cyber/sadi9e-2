@@ -327,7 +327,7 @@ textarea.f-inp{resize:vertical;min-height:90px;line-height:1.65}
           </div>
         </div>
         <div class="f-group">
-          <label>صور المنتج <span style="color:var(--primary);font-weight:600;font-size:11px">(الصورة 1 إلزامية — 4 صور بحد أقصى)</span></label>
+          <label>صور المنتج <span style="color:var(--primary);font-weight:600;font-size:11px">(الصورة 1 إلزامية — 6 صور بحد أقصى)</span></label>
           <div class="img-grid-upload">
             <div class="img-slot slot-main" id="slot1">
               <div class="img-slot-lbl"><i class="fa-solid fa-camera"></i><span>⭐ الرئيسية</span></div>
@@ -352,6 +352,18 @@ textarea.f-inp{resize:vertical;min-height:90px;line-height:1.65}
               <input type="file" id="pImg4" accept="image/*" onchange="previewSlot(4,this)">
               <img class="slot-prev" id="prev4" alt="">
               <button type="button" class="slot-clear" onclick="clearSlot(4)">✕</button>
+            </div>
+            <div class="img-slot" id="slot5">
+              <div class="img-slot-lbl"><i class="fa-solid fa-plus"></i><span>صورة 5</span></div>
+              <input type="file" id="pImg5" accept="image/*" onchange="previewSlot(5,this)">
+              <img class="slot-prev" id="prev5" alt="">
+              <button type="button" class="slot-clear" onclick="clearSlot(5)">✕</button>
+            </div>
+            <div class="img-slot" id="slot6">
+              <div class="img-slot-lbl"><i class="fa-solid fa-plus"></i><span>صورة 6</span></div>
+              <input type="file" id="pImg6" accept="image/*" onchange="previewSlot(6,this)">
+              <img class="slot-prev" id="prev6" alt="">
+              <button type="button" class="slot-clear" onclick="clearSlot(6)">✕</button>
             </div>
           </div>
         </div>
@@ -547,7 +559,7 @@ async function fetchAndDisplayDBProduct(productId) {
   try {
     var res = await _db
       .from('products')
-      .select('id, name, price, description, color, size, image_url, image_url2, image_url3, image_url4')
+      .select('id, name, price, description, color, size, image_url, image_url2, image_url3, image_url4, image_url5, image_url6')
       .eq('id', qId)
       .limit(1);
 
@@ -590,8 +602,8 @@ function displayDBProduct(p) {
   document.getElementById('gPhTxt').textContent = name;
   document.title = name + ' – عثمان للدراجات النارية';
 
-  /* ── Gallery (4 صور محتملة) ── */
-  var imgs = [p.image_url, p.image_url2, p.image_url3, p.image_url4].filter(Boolean);
+  /* ── Gallery (6 صور محتملة) ── */
+  var imgs = [p.image_url, p.image_url2, p.image_url3, p.image_url4, p.image_url5, p.image_url6].filter(Boolean);
   buildDBGallery(imgs, name);
 
   /* ── زر واتساب ذكي بالاسم ── */
@@ -819,7 +831,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (form) form.addEventListener('submit', submitProduct);
 });
 
-/* ── Submit: رفع 4 صور وإدخال صف واحد ── */
+/* ── Submit: رفع 6 صور وإدخال صف واحد ── */
 async function submitProduct(e) {
   e.preventDefault();
 
@@ -835,12 +847,14 @@ async function submitProduct(e) {
     document.getElementById('pImg1').files[0] || null,
     document.getElementById('pImg2').files[0] || null,
     document.getElementById('pImg3').files[0] || null,
-    document.getElementById('pImg4').files[0] || null
+    document.getElementById('pImg4').files[0] || null,
+    document.getElementById('pImg5').files[0] || null,
+    document.getElementById('pImg6').files[0] || null
   ];
 
-  if (!name || !price || !files[0]) {
+  if (!name || !price) {
     msg.className = 'f-msg err';
-    msg.textContent = '❌ الاسم، الثمن، والصورة الرئيسية إلزامية';
+    msg.textContent = '❌ الاسم والثمن إلزاميان';
     msg.style.display = 'block';
     return;
   }
@@ -849,7 +863,7 @@ async function submitProduct(e) {
   msg.style.display = 'none';
   msg.className = 'f-msg';
 
-  var uploaded = [null, null, null, null];
+  var uploaded = [null, null, null, null, null, null];
   var total    = files.filter(Boolean).length;
   var done     = 0;
 
@@ -858,21 +872,42 @@ async function submitProduct(e) {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> رفع الصورة ' + (done + 1) + '/' + total + '...';
     var ext  = file.name.split('.').pop().toLowerCase();
     var path = Date.now() + '-' + Math.random().toString(36).slice(2) + '-' + (idx + 1) + '.' + ext;
-    var res  = await _db.storage.from('products').upload(path, file, { cacheControl: '3600', upsert: false });
-    if (res.error) throw res.error;
-    uploaded[idx] = _db.storage.from('products').getPublicUrl(path).data.publicUrl;
-    done++;
+
+    try {
+      var res = await _db.storage.from('products').upload(path, file, { cacheControl: '3600', upsert: false });
+      if (res.error) {
+        if (res.error.message && res.error.message.toLowerCase().includes('bucket not found')) {
+          console.warn('[DB] Storage bucket not found, continuing without image', res.error);
+          uploaded[idx] = null;
+          done++;
+          return;
+        }
+        throw res.error;
+      }
+      uploaded[idx] = _db.storage.from('products').getPublicUrl(path).data.publicUrl;
+      done++;
+    } catch (err) {
+      if (err.message && err.message.toLowerCase().includes('bucket not found')) {
+        console.warn('[DB] Storage bucket not found, continuing without image', err);
+        uploaded[idx] = null;
+        done++;
+        return;
+      }
+      throw err;
+    }
   }
 
   try {
-    for (var i = 0; i < 4; i++) await uploadOne(files[i], i);
+    for (var i = 0; i < 6; i++) await uploadOne(files[i], i);
 
     var row = {
       name: name, price: price,
       image_url:  uploaded[0],
       image_url2: uploaded[1] || null,
       image_url3: uploaded[2] || null,
-      image_url4: uploaded[3] || null
+      image_url4: uploaded[3] || null,
+      image_url5: uploaded[4] || null,
+      image_url6: uploaded[5] || null
     };
     if (desc)  row.description = desc;
     if (color) row.color       = color;
@@ -885,7 +920,7 @@ async function submitProduct(e) {
     msg.textContent = '✅ تم نشر المنتج بنجاح! (' + total + (total === 1 ? ' صورة' : ' صور') + ')';
     msg.style.display = 'block';
     e.target.reset();
-    [1, 2, 3, 4].forEach(function (n) { clearSlot(n); });
+    [1, 2, 3, 4, 5, 6].forEach(function (n) { clearSlot(n); });
     setTimeout(function () { closeAdminModal(); window.location.href = 'dashboard.html'; }, 2000);
 
   } catch (err) {
